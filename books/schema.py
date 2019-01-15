@@ -65,14 +65,27 @@ class CreateBook(graphene.Mutation):
         publisher = graphene.String()
 
     def mutate(self, info, **args):
-        print(args)
         book = Book(**args)
         book.save()
 
         return CreateBook(book=book)
 
+class DeleteBook(graphene.Mutation):
+    book = graphene.Field(BookType)
+
+    class Arguments:
+        id = graphene.String()
+
+    def mutate(self, info, **args):
+        if (args.get('id')):
+            book_to_delete = Book.objects.get(pk=args.get('id'))
+            book_to_delete.delete()
+            return DeleteBook(book=book)
+        return None
+
 class Mutation(graphene.ObjectType):
     create_book = CreateBook.Field()
+    delete_book = DeleteBook.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
