@@ -56,7 +56,7 @@ class CreateBook(graphene.Mutation):
 
     class Arguments:
         title = graphene.String()
-        author = graphene.String()
+        author_name = graphene.String()
         description = graphene.String()
         genre = graphene.String()
         image = graphene.String()
