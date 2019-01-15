@@ -2,13 +2,19 @@ from django.db import models
 
 class Book(models.Model):
     title = models.CharField(max_length=1000)
-    author = models.CharField(max_length=256, default="")
+    author_name = models.CharField(max_length=256, default="")
     description = models.TextField()
     genre = models.CharField(max_length=1000)
     image = models.URLField(default="")
     isbn = models.CharField(max_length=100)
     publication_date = models.CharField(max_length=1000, default="")
     publisher = models.CharField(max_length=256, default="")
+
+class Author(models.Model):
+    name = models.CharField(max_length=256)
+    nationality = models.CharField(max_length=256)
+    birth_year = models.IntegerField()
+    books = models.ManyToManyField(Book)
 
 class Review(models.Model):
     author = models.CharField(max_length=256)
