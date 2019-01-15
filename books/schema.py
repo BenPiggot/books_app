@@ -50,6 +50,29 @@ class Query(graphene.ObjectType):
         if id is not None:
           return PurchaseVenue.objects.get(pk=id)
         return None
-        
 
-schema = graphene.Schema(query=Query)
+class CreateBook(graphene.Mutation):
+    book = graphene.Field(BookType)
+
+    class Arguments:
+        title = graphene.String()
+        author = graphene.String()
+        description = graphene.String()
+        genre = graphene.String()
+        image = graphene.String()
+        isbn = graphene.String()
+        publication_date = graphene.String()
+        publisher = graphene.String()
+
+    def mutate(self, info, **args):
+        print(args)
+        book = Book(**args)
+        book.save()
+
+        return CreateBook(book=book)
+
+class Mutation(graphene.ObjectType):
+    create_book = CreateBook.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
