@@ -25,7 +25,7 @@ class BookList extends Component<{}, {}> {
             return (
               <div className="books">
                 {data.books.map(book => (
-                  <div className="book">
+                  <div className="book" key={book.id}>
                     <h2>{book.title}</h2>
                     <h4> by {book.authorName}</h4>
                     <p>{book.description}</p>
