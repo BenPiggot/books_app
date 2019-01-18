@@ -1,0 +1,8 @@
+.books {
+  text-align: left;
+  margin: auto 5%;
+}
+
+.books .book {
+  margin-bottom: 40px;
+}
