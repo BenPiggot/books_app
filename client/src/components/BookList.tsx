@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { Link } from 'react-router-dom';
 
 import './BookList.css';
 
@@ -24,13 +25,19 @@ class BookList extends Component<{}, {}> {
           if (data.books) {
             return (
               <div className="books">
+                <h2>My Books</h2>
                 {data.books.map(book => (
-                  <div className="book" key={book.id}>
-                    <h2>{book.title}</h2>
-                    <h4> by {book.authorName}</h4>
-                    <p>{book.description}</p>
+                  <div className="card book" key={book.id}>
+                    <div className="card-content">
+                      <h4>{book.title}</h4>
+                      <h5> by {book.authorName}</h5>
+                      <p>{book.description}</p>
+                    </div>
                   </div>
                 ))}
+                <Link to="/add-book" className="btn-floating btn-large waves-effect waves-light red">
+                  <i className="material-icons">+</i>
+                </Link>
               </div>
             )
           }
