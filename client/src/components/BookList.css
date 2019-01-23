@@ -11,6 +11,16 @@
   margin-top: 0;
 }
 
+.books .book a {
+  color: black;
+}
+
+.books .book a:hover {
+  text-decoration: underline;
+}
+
 .books h2 {
   margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
 }

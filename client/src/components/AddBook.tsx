@@ -110,7 +110,7 @@ class AddBook extends Component<RouteComponentProps, AddBookState>{
                   <button className="btn btn-large waves-effect waves-light blue" type="submit">
                     Submit
                   </button>
-                  <Link to="/" className="waves-effect waves-light btn btn-large grey-lighten-1">Back</Link>
+                  <Link to="/" className="waves-effect waves-light btn btn-large grey lighten-1">Back</Link>
                 </div>
               </form>
             </div>

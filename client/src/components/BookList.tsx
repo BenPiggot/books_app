@@ -34,7 +34,9 @@ class BookList extends Component<{}, {}> {
                 {data.books.map(book => (
                   <div className="card book" key={book.id}>
                     <div className="card-content">
-                      <h4>{book.title}</h4>
+                      <Link to={`/book/${book.id}`}>
+                        <h4>{book.title}</h4>
+                      </Link>
                       <h5> by {book.authorName}</h5>
                       <p>{book.description}</p>
                     </div>
