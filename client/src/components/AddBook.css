@@ -1,3 +1,8 @@
 .form-container {
   padding-top: 10px;
 }
+
+.form-container .button-group .btn {
+  margin-left: 10px;
+  margin-right: 10px;
+}

@@ -24,8 +24,13 @@ class BookList extends Component<{}, {}> {
           if (loading) return <div>Loading...</div>
           if (data.books) {
             return (
-              <div className="books">
-                <h2>My Books</h2>
+              <div className="container books">
+                <h2>
+                  My Books
+                  <Link to="/add-book" className="btn-floating btn-large waves-effect waves-light red">
+                    <i className="material-icons">add</i>
+                  </Link>
+                </h2>
                 {data.books.map(book => (
                   <div className="card book" key={book.id}>
                     <div className="card-content">
@@ -35,9 +40,6 @@ class BookList extends Component<{}, {}> {
                     </div>
                   </div>
                 ))}
-                <Link to="/add-book" className="btn-floating btn-large waves-effect waves-light red">
-                  <i className="material-icons">+</i>
-                </Link>
               </div>
             )
           }

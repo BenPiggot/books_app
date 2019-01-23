@@ -1,6 +1,6 @@
 .books {
   text-align: left;
-  margin: auto 5%;
+  padding-top: 10px;
 }
 
 .books .book {
@@ -9,4 +9,8 @@
 
 .books .book h4 {
   margin-top: 0;
+}
+
+.books h2 {
+  margin-top: 10px;
 }
