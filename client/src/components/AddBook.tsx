@@ -70,7 +70,6 @@ class AddBook extends Component<RouteComponentProps, AddBookState>{
                     description: ''
                   })
                   if (res) {
-                    debugger
                     this.props.history.push(`/book/${res.data.createBook.book.id}`);
                   }
                 }}
