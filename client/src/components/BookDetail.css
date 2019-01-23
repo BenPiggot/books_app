@@ -5,3 +5,13 @@
 .card h3 {
   margin-top: 5px;
 }
+
+.book-detail-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.book-detail-buttons .btn {
+  margin-left: 5px;
+  margin-right: 5px;
+}

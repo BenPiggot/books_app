@@ -77,7 +77,6 @@ class AddBook extends Component<RouteComponentProps, AddBookState>{
                 <div className="row">
                   <div className="input-field">
                     <input 
-                      placeholder="Book Ttile" 
                       id="title" type="text" 
                       className="validate" 
                       name="title" 
@@ -89,7 +88,6 @@ class AddBook extends Component<RouteComponentProps, AddBookState>{
                     <input 
                       id="authorName" 
                       type="text" className="validate" 
-                      placeholder="Author Name" 
                       onChange={this.updateAuthorName}
                     />
                     <label htmlFor="authorName">Author Name</label>
@@ -99,7 +97,6 @@ class AddBook extends Component<RouteComponentProps, AddBookState>{
                       id="description" 
                       className="materialize-textarea"
                       onChange={this.updateDescription}
-                      placeholder="Add a brief description of this book"
                     >
                     </textarea>
                     <label htmlFor="textarea1">Description</label>

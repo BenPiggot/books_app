@@ -80,8 +80,7 @@ class DeleteBook(graphene.Mutation):
         if (args.get('id')):
             book_to_delete = Book.objects.get(pk=args.get('id'))
             book_to_delete.delete()
-            return DeleteBook(book=book)
-        return None
+
 
 class Mutation(graphene.ObjectType):
     create_book = CreateBook.Field()

@@ -3,6 +3,8 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { RouteComponentProps, match, withRouter, Link} from 'react-router-dom';
 
+import DeleteBook from './DeleteBook';
+
 import './BookDetail.css';
 
 interface RouteInfo { id: string }
@@ -33,7 +35,10 @@ const BookDetail = (props: BookDetailProps) => {
                 <p>{data.book.description}</p>
               </div>
             </div>
-            <Link to="/" className="waves-effect waves-light btn btn-large grey lighten-1">Back</Link>
+            <div className="book-detail-buttons">         
+              <Link to="/" className="waves-effect waves-light btn btn-large grey lighten-1">Back</Link>
+              <DeleteBook id={props.match.params.id}/>
+            </div>
           </div>
         )
       }}

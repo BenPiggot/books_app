@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import './BookList.css';
 
-const BOOKS_QUERY = gql`
+export const BOOKS_QUERY = gql`
   query BOOKS_QUERY {
     books {
       id
