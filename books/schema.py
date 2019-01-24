@@ -76,6 +76,9 @@ class CreateBook(graphene.Mutation):
             )
             file = args['image']
             s3.upload_fileobj(file, AWS_S3_BUCKET, file._name)
+            image_path = 'https://s3.amazonaws.com' + '/' + AWS_S3_BUCKET + '/' + file._name
+            args.update({ 'image': image_path })
+            
         book = Book(**args)
         book.save()
 

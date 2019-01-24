@@ -18,6 +18,8 @@ const BOOK_QUERY = gql`
     book(id: $id) {
       title
       description
+      image
+      authorName
     }
   }
 `
@@ -32,7 +34,9 @@ const BookDetail = (props: BookDetailProps) => {
             <div className="card">
               <div className="card-content">
                 <h3>{data.book.title}</h3>
+                <h5>by {data.book.authorName}</h5>
                 <p>{data.book.description}</p>
+                { data.book.image && <img src={data.book.image} alt={data.book.title} /> }
               </div>
             </div>
             <div className="book-detail-buttons">         
