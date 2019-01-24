@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import gql from 'graphql-tag';
-import S3 from 'aws-sdk/clients/s3';
 import './AddBook.css';
 
 const ADD_BOOK_MUTATION = gql`
@@ -10,7 +9,7 @@ const ADD_BOOK_MUTATION = gql`
       $title: String!
       $authorName: String!
       $description: String!
-      $image: String
+      $image: Upload!
     ) {
     createBook(
       title: $title, 
@@ -29,7 +28,7 @@ interface AddBookState {
   title: string
   authorName: string
   description: string
-  image: string
+  image: File | null
 }
 
 
@@ -38,7 +37,7 @@ class AddBook extends Component<RouteComponentProps, AddBookState>{
     title: '',
     authorName:'',
     description: '',
-    image: ''
+    image: null
   }
 
   updateTitle = e => {
@@ -59,17 +58,18 @@ class AddBook extends Component<RouteComponentProps, AddBookState>{
     })
   }
 
-  uploadImage = e => {
+  uploadImage = async (e) => {
     const images = e.target.files;
+    console.log(images)
+    console.log(images[0])
     if (images[0]) {
       this.setState({
-        image: images[0].name
+        image: images[0]
       })
     }
   }
   
   render() {
-    console.log(S3)
     return (
       <Mutation
         mutation={ADD_BOOK_MUTATION}
@@ -83,12 +83,13 @@ class AddBook extends Component<RouteComponentProps, AddBookState>{
                 className="container form-container"
                 onSubmit={async (e) => {
                   e.preventDefault();
+                  console.log(this.state)
                   const res = await createBook();
                   this.setState({
                     title: '',
                     authorName: '',
                     description: '',
-                    image: ''
+                    image: null
                   })
                   if (res) {
                     this.props.history.push(`/book/${res.data.createBook.book.id}`);

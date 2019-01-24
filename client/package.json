@@ -13,6 +13,7 @@
     "apollo-link": "^1.2.6",
     "apollo-link-context": "^1.0.12",
     "apollo-link-http": "^1.5.9",
+    "apollo-upload-client": "^10.0.0",
     "aws-sdk": "^2.393.0",
     "graphql": "^14.0.2",
     "graphql-tag": "^2.10.0",

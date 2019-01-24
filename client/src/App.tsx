@@ -3,6 +3,7 @@ import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context'
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { createUploadLink } from 'apollo-upload-client';
 import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import getCookie from './utils/getCookie';
@@ -13,10 +14,13 @@ import BookList from './components/BookList';
 import AddBook from './components/AddBook';
 import BookDetail from './components/BookDetail';
 
-const httpLink = createHttpLink({
+
+const httpLink = createUploadLink({
   fetch,
   uri: 'http://localhost:8000/graphql/',
-  credentials: 'same-origin',
+  fetchOptions: {
+    credentials: 'same-origin'
+  }
 });
 
 

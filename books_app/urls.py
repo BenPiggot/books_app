@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from graphene_django.views import GraphQLView
+from graphene_file_upload.django import FileUploadGraphQLView
 from django.views.decorators.csrf import csrf_exempt
 import books.views
 
 urlpatterns = [
     path('', books.views.index),
     path('admin/', admin.site.urls),
-    path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True)))
+    path('graphql/', csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True)))
 ]

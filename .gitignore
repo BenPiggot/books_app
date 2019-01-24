@@ -20,5 +20,6 @@ local_settings.py
 
 ### Client ###
 /client/node_modules
+/client/config.ts
 
 /books_app/config.py

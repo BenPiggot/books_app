@@ -1,5 +1,8 @@
 from graphene_django import DjangoObjectType
 import graphene
+from graphene_file_upload.scalars import Upload
+import boto3
+from books_app.config import AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_S3_BUCKET
 
 from .models import Book, Review, PurchaseVenue
 
@@ -59,13 +62,20 @@ class CreateBook(graphene.Mutation):
         author_name = graphene.String()
         description = graphene.String()
         genre = graphene.String()
-        image = graphene.String()
+        image = Upload()
         isbn = graphene.String()
         publication_date = graphene.String()
         publisher = graphene.String()
 
     def mutate(self, info, **args):
-
+        if 'image' in args:
+            s3 = boto3.client(
+                's3',
+                aws_access_key_id=AWS_ACCESS_KEY,
+                aws_secret_access_key=AWS_SECRET_KEY,
+            )
+            file = args['image']
+            s3.upload_fileobj(file, AWS_S3_BUCKET, file._name)
         book = Book(**args)
         book.save()
 
