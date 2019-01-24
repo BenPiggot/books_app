@@ -65,6 +65,7 @@ class CreateBook(graphene.Mutation):
         publisher = graphene.String()
 
     def mutate(self, info, **args):
+
         book = Book(**args)
         book.save()
 

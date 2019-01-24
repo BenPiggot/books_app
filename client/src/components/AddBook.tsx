@@ -2,14 +2,22 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 import gql from 'graphql-tag';
+import S3 from 'aws-sdk/clients/s3';
 import './AddBook.css';
 
 const ADD_BOOK_MUTATION = gql`
   mutation ADD_BOOK_MUTATION(
       $title: String!
       $authorName: String!
+      $description: String!
+      $image: String
     ) {
-    createBook(title: $title, authorName: $authorName) {
+    createBook(
+      title: $title, 
+      authorName: $authorName, 
+      description: $description,
+      image: $image
+    ) {
       book {
         id
       }
@@ -21,6 +29,7 @@ interface AddBookState {
   title: string
   authorName: string
   description: string
+  image: string
 }
 
 
@@ -28,7 +37,8 @@ class AddBook extends Component<RouteComponentProps, AddBookState>{
   state = {
     title: '',
     authorName:'',
-    description: ''
+    description: '',
+    image: ''
   }
 
   updateTitle = e => {
@@ -48,8 +58,18 @@ class AddBook extends Component<RouteComponentProps, AddBookState>{
       description: e.target.value
     })
   }
+
+  uploadImage = e => {
+    const images = e.target.files;
+    if (images[0]) {
+      this.setState({
+        image: images[0].name
+      })
+    }
+  }
   
   render() {
+    console.log(S3)
     return (
       <Mutation
         mutation={ADD_BOOK_MUTATION}
@@ -67,7 +87,8 @@ class AddBook extends Component<RouteComponentProps, AddBookState>{
                   this.setState({
                     title: '',
                     authorName: '',
-                    description: ''
+                    description: '',
+                    image: ''
                   })
                   if (res) {
                     this.props.history.push(`/book/${res.data.createBook.book.id}`);
@@ -100,6 +121,16 @@ class AddBook extends Component<RouteComponentProps, AddBookState>{
                     >
                     </textarea>
                     <label htmlFor="textarea1">Description</label>
+                  </div>
+                  <div className="input-field">
+                    <label htmlFor="image">
+                      Book Image
+                      <input
+                        type="file" id="image"
+                        placeholder="Upload an Image"
+                        onChange={this.uploadImage}
+                      />
+                    </label>
                   </div>
                 </div>
                 <div className="button-group">

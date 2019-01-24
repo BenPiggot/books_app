@@ -2,3 +2,4 @@ django
 graphene_django
 psycopg2
 django-cors-headers
+boto3
