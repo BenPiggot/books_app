@@ -6,6 +6,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { BOOKS_QUERY } from './BookList';
 
 import './DeleteBook.css';
+import { ApolloCache } from 'apollo-cache';
 
 const DELETE_BOOK = gql`
   mutation DELETE_BOOK($id: String!) {

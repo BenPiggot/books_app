@@ -13,6 +13,7 @@ import './App.css';
 import BookList from './components/BookList';
 import AddBook from './components/AddBook';
 import BookDetail from './components/BookDetail';
+import UpdateBook from './components/UpdateBook';
 
 
 const httpLink = createUploadLink({
@@ -39,6 +40,7 @@ class App extends React.Component<{}, {}> {
               <Route path="/" exact component={BookList} />
               <Route path="/add-book/" component={AddBook} />
               <Route path="/book/:id" component={BookDetail} />
+              <Route path="/update-book/:id" component={UpdateBook} />
             </>
           </Router>
         </div>

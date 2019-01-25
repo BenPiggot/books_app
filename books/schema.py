@@ -84,6 +84,7 @@ class CreateBook(graphene.Mutation):
 
         return CreateBook(book=book)
 
+
 class DeleteBook(graphene.Mutation):
     book = graphene.Field(BookType)
 
@@ -96,9 +97,45 @@ class DeleteBook(graphene.Mutation):
             book_to_delete.delete()
 
 
+class UpdateBook(graphene.Mutation):
+    book = graphene.Field(BookType)
+
+    class Arguments:
+        id=graphene.String()
+        title = graphene.String()
+        author_name = graphene.String()
+        description = graphene.String()
+        genre = graphene.String()
+        image = Upload()
+        isbn = graphene.String()
+        publication_date = graphene.String()
+        publisher = graphene.String()
+
+    def mutate(self, info, **args):
+        # if 'image' in args:
+        #     s3 = boto3.client(
+        #         's3',
+        #         aws_access_key_id=AWS_ACCESS_KEY,
+        #         aws_secret_access_key=AWS_SECRET_KEY,
+        #     )
+        #     file = args['image']
+        #     s3.upload_fileobj(file, AWS_S3_BUCKET, file._name)
+        #     image_path = 'https://s3.amazonaws.com' + '/' + AWS_S3_BUCKET + '/' + file._name
+        #     args.update({ 'image': image_path })
+        
+        if (args.get('id')):
+            Book.objects.filter(pk=args.get('id')).update(**args)
+            updated_book = Book.objects.get(pk=args.get('id'))
+            print(updated_book.__dict__)
+            return UpdateBook(book=updated_book)
+
+        return None
+
+
 class Mutation(graphene.ObjectType):
     create_book = CreateBook.Field()
     delete_book = DeleteBook.Field()
+    update_book = UpdateBook.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

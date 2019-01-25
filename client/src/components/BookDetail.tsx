@@ -13,7 +13,7 @@ interface BookDetailProps extends RouteComponentProps {
   match: match<RouteInfo>
 }
 
-const BOOK_QUERY = gql`
+export const BOOK_QUERY = gql`
   query BOOK_QUERY($id: String!) {
     book(id: $id) {
       title
@@ -42,6 +42,7 @@ const BookDetail = (props: BookDetailProps) => {
             <div className="book-detail-buttons">         
               <Link to="/" className="waves-effect waves-light btn btn-large grey lighten-1">Back</Link>
               <DeleteBook id={props.match.params.id}/>
+              <Link className="waves-effect waves-light btn btn-large light-blue accent-2" to={`/update-book/${props.match.params.id}`}>Update</Link>
             </div>
           </div>
         )

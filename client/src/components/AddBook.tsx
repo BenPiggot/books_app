@@ -60,8 +60,6 @@ class AddBook extends Component<RouteComponentProps, AddBookState>{
 
   uploadImage = async (e) => {
     const images = e.target.files;
-    console.log(images)
-    console.log(images[0])
     if (images[0]) {
       this.setState({
         image: images[0]
