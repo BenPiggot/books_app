@@ -126,7 +126,6 @@ class UpdateBook(graphene.Mutation):
         if (args.get('id')):
             Book.objects.filter(pk=args.get('id')).update(**args)
             updated_book = Book.objects.get(pk=args.get('id'))
-            print(updated_book.__dict__)
             return UpdateBook(book=updated_book)
 
         return None

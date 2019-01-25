@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
-import { Mutation, Query } from 'react-apollo';
+import { Mutation, Query, withApollo, compose, DataProps } from 'react-apollo';
+import { DataProxy } from 'apollo-cache';
 import gql from 'graphql-tag';
 import { RouteComponentProps, match, withRouter, Link } from 'react-router-dom';
 
 import { BOOK_QUERY } from './BookDetail';
+import { BOOKS_QUERY } from './BookList';
+import ApolloClient from 'apollo-client';
+
+
 
 const UPDATE_BOOK = gql`
   mutation UPDATE_BOOK(
@@ -22,6 +27,10 @@ const UPDATE_BOOK = gql`
     ) {
       book {
         id
+        title
+        authorName
+        description
+        image
       }
     }
   }
@@ -29,8 +38,9 @@ const UPDATE_BOOK = gql`
 
 interface RouteInfo { id: string }
 
-interface UpdateBookProps extends RouteComponentProps {
+interface UpdateBookProps extends RouteComponentProps, DataProxy {
   match: match<RouteInfo>
+  client: ApolloClient<any>
 }
 
 
@@ -77,6 +87,14 @@ class UpdateBook extends Component<UpdateBookProps, UpdateBookState> {
     }
   }
 
+  update = (cache, payload) => {
+    const book = payload.data.updateBook.book;
+    let data = cache.readQuery({ query: BOOK_QUERY, variables: { id: book.id } });
+    data.book = book;
+    cache.writeQuery({ query: BOOK_QUERY, variables: { id: book.id }, data })
+    this.props.history.push(`/book/${book.id}`);
+  }
+
   render() {
     return (
       <Query query={BOOK_QUERY} variables={{ id: this.props.match.params.id }}>
@@ -92,6 +110,7 @@ class UpdateBook extends Component<UpdateBookProps, UpdateBookState> {
                 description: this.state.description || data.book.description,
                 image: this.state.image || data.book.image
               }}
+              update={this.update}
             >
               {(updateBook, {loading, error}) => {
                 return (
@@ -99,10 +118,7 @@ class UpdateBook extends Component<UpdateBookProps, UpdateBookState> {
                     className="container form-container"
                     onSubmit={async (e) => {
                       e.preventDefault();
-                      const res = await updateBook();
-                      if (res) {
-                        this.props.history.push(`/book/${res.data.updateBook.book.id}`);
-                      }
+                      await updateBook();
                     }}
                   >
                     <div className="row">
@@ -142,7 +158,7 @@ class UpdateBook extends Component<UpdateBookProps, UpdateBookState> {
                           type="file" 
                           id="image"
                           placeholder="Upload an Image"
-                          defaultValue={data.book.image}
+                          // defaultValue={data.book.image}
                           onChange={this.uploadImage}
                         />
                       </label>
@@ -166,4 +182,4 @@ class UpdateBook extends Component<UpdateBookProps, UpdateBookState> {
   }
 }
 
-export default withRouter(UpdateBook);
+export default compose(withApollo, withRouter)(UpdateBook);
