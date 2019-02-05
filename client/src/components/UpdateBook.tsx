@@ -5,7 +5,6 @@ import gql from 'graphql-tag';
 import { RouteComponentProps, match, withRouter, Link } from 'react-router-dom';
 
 import { BOOK_QUERY } from './BookDetail';
-import { BOOKS_QUERY } from './BookList';
 import ApolloClient from 'apollo-client';
 
 
@@ -154,14 +153,14 @@ class UpdateBook extends Component<UpdateBookProps, UpdateBookState> {
                       <div className="input-field">
                         <label htmlFor="image">
                           Book Image
-                        <input
-                          type="file" 
-                          id="image"
-                          placeholder="Upload an Image"
-                          // defaultValue={data.book.image}
-                          onChange={this.uploadImage}
-                        />
-                      </label>
+                          <input
+                            type="file" 
+                            id="image"
+                            placeholder="Upload an Image"
+                            // defaultValue={data.book.image}
+                            onChange={this.uploadImage}
+                          />
+                        </label>
                       </div>
                     </div>
                     <button
@@ -177,7 +176,6 @@ class UpdateBook extends Component<UpdateBookProps, UpdateBookState> {
           )
         }}
       </Query>
-
     )
   }
 }
