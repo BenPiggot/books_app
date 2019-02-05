@@ -19,7 +19,7 @@ export const BOOKS_QUERY = gql`
 class BookList extends Component<{}, {}> {
   render() {
     return (
-      <Query query={BOOKS_QUERY}>
+      <Query query={BOOKS_QUERY} fetchPolicy="cache-and-network">
         {({ data, loading, error}) => {
           if (loading) return <div>Loading...</div>
           if (data.books) {
