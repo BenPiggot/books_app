@@ -81,7 +81,6 @@ class AddBook extends Component<RouteComponentProps, AddBookState>{
                 className="container form-container"
                 onSubmit={async (e) => {
                   e.preventDefault();
-                  console.log(this.state)
                   const res = await createBook();
                   this.setState({
                     title: '',
