@@ -11,12 +11,14 @@
 }
 
 .card img {
-  width: 90%;
+  max-width: 90%;
+  margin-top: 20px;
 }
 
 .book-detail-buttons {
   display: flex;
   justify-content: center;
+  margin-bottom: 20px;
 }
 
 .book-detail-buttons .btn {
