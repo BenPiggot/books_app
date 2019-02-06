@@ -164,7 +164,7 @@ class UpdateBook extends Component<UpdateBookProps, UpdateBookState> {
                         </label>
                       </div>
                     </div>
-                    <div className="book-detail-buttons">  
+                    <div className="book-update-buttons">  
                       <button
                         type="submit"
                         className="waves-effect waves-light btn btn-large light-blue accent-2"
