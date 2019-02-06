@@ -75,7 +75,7 @@ class AddBook extends Component<RouteComponentProps, AddBookState>{
       >
         {(createBook, { loading, error }) => {
           return (
-            <div>
+            <div className="add-book">
               <h3>Add a Book</h3>
               <form 
                 className="container form-container"

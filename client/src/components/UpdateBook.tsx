@@ -7,6 +7,7 @@ import { RouteComponentProps, match, withRouter, Link } from 'react-router-dom';
 import { BOOK_QUERY } from './BookDetail';
 import ApolloClient from 'apollo-client';
 
+import './UpdateBook.css';
 
 
 const UPDATE_BOOK = gql`
@@ -163,12 +164,20 @@ class UpdateBook extends Component<UpdateBookProps, UpdateBookState> {
                         </label>
                       </div>
                     </div>
-                    <button
-                      type="submit"
-                      className="waves-effect waves-light btn btn-large light-blue accent-2"
-                    >
-                      Update
-                    </button>
+                    <div className="book-detail-buttons">  
+                      <button
+                        type="submit"
+                        className="waves-effect waves-light btn btn-large light-blue accent-2"
+                      >
+                        Update
+                      </button>
+                      <Link 
+                        to={`/book/${this.props.match.params.id}`} 
+                        className="waves-effect waves-light btn btn-large grey lighten-1"
+                      >
+                        Back
+                      </Link>
+                    </div>
                   </form>
                 )
               }}

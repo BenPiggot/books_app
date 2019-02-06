@@ -12,7 +12,7 @@
 }
 
 .books .book a {
-  color: black;
+  color: #444;
 }
 
 .books .book a:hover {
@@ -23,4 +23,5 @@
   margin-top: 10px;
   display: flex;
   justify-content: space-between;
+  font-weight: 500;
 }
