@@ -4,3 +4,4 @@ psycopg2
 django-cors-headers
 boto3
 django-graphql-extensions
+django-graphql-jwt

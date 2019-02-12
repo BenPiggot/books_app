@@ -2,8 +2,10 @@ from graphene_django import DjangoObjectType
 import graphene
 from graphene_file_upload.scalars import Upload
 import boto3
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 from graphql_extensions.auth.decorators import login_required
+import graphql_jwt
+
 from books_app.config import AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_S3_BUCKET
 
 from .models import Book, Review, PurchaseVenue
@@ -37,6 +39,8 @@ class Query(graphene.ObjectType):
     review = graphene.Field(ReviewType, id=graphene.String())
     purchase_venue = graphene.Field(PurchaseVenueType, id=graphene.String())
 
+    me = graphene.Field(UserType, token=graphene.String())
+
     def resolve_books(self, info):
         if info.context.user.is_authenticated:
             user_id = info.context.user.id
@@ -46,6 +50,13 @@ class Query(graphene.ObjectType):
     def resolve_users(self, info):
         User = get_user_model()
         return User.objects.all()
+
+    def resolve_me(self, info, **args):
+        user = info.context.user
+
+        if user.is_anonymous:
+            raise Exception('Not logged in!')
+        return user
     
     def resolve_reviews(self, info):
         return Review.objects.all()
@@ -58,9 +69,6 @@ class Query(graphene.ObjectType):
         if id is not None:
             return Book.objects.get(pk=id)
         return None
-    
-    def resolve_me(self, info, **args):
-        
 
     def resolve_user(self, info, **args):
         User = get_user_model()
@@ -164,6 +172,27 @@ class UpdateBook(graphene.Mutation):
         return None
 
 
+class Login(graphene.Mutation):
+    user = graphene.Field(UserType)
+
+    class Arguments:
+        username = graphene.String()
+        password = graphene.String()
+
+    @staticmethod
+    def mutate(root, info, **args):
+        user = authenticate(
+            username=args.get('username'),
+            password=args.get('password'),
+        )
+
+        if not user:
+            raise Exception('Invalid username or password!')
+
+        info.context.session['token'] = user.auth_token.key
+        return Login(user=user)
+
+
 class CreateUser(graphene.Mutation):
     user = graphene.Field(UserType)
 
@@ -214,6 +243,7 @@ class Mutation(graphene.ObjectType):
     update_book = UpdateBook.Field()
     create_user = CreateUser.Field()
     update_user = UpdateUser.Field()
+    login = Login.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
