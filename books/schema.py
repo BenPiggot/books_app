@@ -3,6 +3,7 @@ import graphene
 from graphene_file_upload.scalars import Upload
 import boto3
 from django.contrib.auth import get_user_model
+from graphql_extensions.auth.decorators import login_required
 from books_app.config import AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_S3_BUCKET
 
 from .models import Book, Review, PurchaseVenue
@@ -37,7 +38,10 @@ class Query(graphene.ObjectType):
     purchase_venue = graphene.Field(PurchaseVenueType, id=graphene.String())
 
     def resolve_books(self, info):
-        return Book.objects.all()
+        if info.context.user.is_authenticated:
+            user_id = info.context.user.id
+            return Book.objects.filter(user=user_id)
+        return Book.objects.none()
 
     def resolve_users(self, info):
         User = get_user_model()
@@ -54,6 +58,9 @@ class Query(graphene.ObjectType):
         if id is not None:
             return Book.objects.get(pk=id)
         return None
+    
+    def resolve_me(self, info, **args):
+        
 
     def resolve_user(self, info, **args):
         User = get_user_model()
@@ -87,7 +94,9 @@ class CreateBook(graphene.Mutation):
         isbn = graphene.String()
         publication_date = graphene.String()
         publisher = graphene.String()
+        user_id = graphene.String()
 
+    @login_required
     def mutate(self, info, **args):
         if 'image' in args:
             s3 = boto3.client(
@@ -99,7 +108,8 @@ class CreateBook(graphene.Mutation):
             s3.upload_fileobj(file, AWS_S3_BUCKET, file._name)
             image_path = 'https://s3.amazonaws.com' + '/' + AWS_S3_BUCKET + '/' + file._name
             args.update({ 'image': image_path })
-            
+        
+        args.update({ 'user_id': info.context.user.id })
         book = Book(**args)
         book.save()
         return CreateBook(book=book)
@@ -111,10 +121,12 @@ class DeleteBook(graphene.Mutation):
     class Arguments:
         id = graphene.String()
 
+    @login_required
     def mutate(self, info, **args):
         if (args.get('id')):
             book_to_delete = Book.objects.get(pk=args.get('id'))
-            book_to_delete.delete()
+            if book_to_delete.user == info.context.user.id:
+                book_to_delete.delete()
 
 
 class UpdateBook(graphene.Mutation):
@@ -131,6 +143,7 @@ class UpdateBook(graphene.Mutation):
         publication_date = graphene.String()
         publisher = graphene.String()
 
+    @login_required
     def mutate(self, info, **args):
         # if 'image' in args:
         #     s3 = boto3.client(
@@ -146,7 +159,8 @@ class UpdateBook(graphene.Mutation):
         if (args.get('id')):
             Book.objects.filter(pk=args.get('id')).update(**args)
             updated_book = Book.objects.get(pk=args.get('id'))
-            return UpdateBook(book=updated_book)
+            if updated_book.user == info.context.user.id:
+                return UpdateBook(book=updated_book)
         return None
 
 
@@ -160,6 +174,7 @@ class CreateUser(graphene.Mutation):
         first_name = graphene.String()
         last_name = graphene.String()
 
+    @login_required
     def mutate(self, info, **args):
         user = get_user_model()(
             username=args.get('username'),
@@ -167,9 +182,10 @@ class CreateUser(graphene.Mutation):
             first_name=args.get('first_name') or '',
             last_name=args.get('last_name') or ''
         )
-        user.set_password(args.get('password'))
-        user.save()
-        return CreateUser(user=user)
+        if user.id == info.context.user.id:
+            user.set_password(args.get('password'))
+            user.save()
+            return CreateUser(user=user)
 
 
 class UpdateUser(graphene.Mutation):
@@ -188,7 +204,6 @@ class UpdateUser(graphene.Mutation):
             User = get_user_model()
             User.objects.filter(pk=args.get('id')).update(**args)
             updated_user = User.objects.get(pk=args.get('id'))
-            print(updated_user)
             return UpdateUser(user=updated_user)
         return None
 

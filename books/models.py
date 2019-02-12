@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 class Book(models.Model):
     title = models.CharField(max_length=1000)
@@ -9,6 +11,7 @@ class Book(models.Model):
     isbn = models.CharField(max_length=100)
     publication_date = models.CharField(max_length=1000, default="")
     publisher = models.CharField(max_length=256, default="")
+    user = models.ForeignKey('auth.User',on_delete=models.CASCADE, null=True)
 
 class Author(models.Model):
     name = models.CharField(max_length=256)

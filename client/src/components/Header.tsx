@@ -6,6 +6,8 @@ const Header = () => {
     <nav >
       <div className="nav-wrapper  light-blue darken-4">
         <ul id="nav-mobile" className="right hide-on-med-and-down">
+          <li><Link to="/login">Login</Link></li>
+          <li><Link to="/create-account">Create Account</Link></li>
           <li><Link to="/">Home</Link></li>
           <li><Link to="/add-book">Add New Book</Link></li>
         </ul>

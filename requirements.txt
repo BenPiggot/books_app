@@ -3,3 +3,4 @@ graphene_django
 psycopg2
 django-cors-headers
 boto3
+django-graphql-extensions
