@@ -22,6 +22,9 @@ const CURRENT_USER_QUERY = gql`
   query CURRENT_USER_QUERY($token: String!) {
     me(token: $token) {
       id
+      username
+      firstName
+      lastName
     }
   }
 `
@@ -64,7 +67,6 @@ class Login extends Component<{}, LoginState> {
                   const res = await tokenAuth()
                   if (res) {
                     localStorage.setItem('JWT', res.data.tokenAuth.token)
-                    console.log(localStorage.getItem('JWT'))
                   }
                 }}
               >
