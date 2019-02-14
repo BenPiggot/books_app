@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { Mutation } from 'react-apollo';
+import { Mutation, compose } from 'react-apollo';
 import gql from 'graphql-tag';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 interface LoginState {
   username: string
   password: string
 }
+
+interface LoginProps extends RouteComponentProps {}
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION(
@@ -29,7 +32,7 @@ const CURRENT_USER_QUERY = gql`
   }
 `
 
-class Login extends Component<{}, LoginState> {
+class Login extends Component<LoginProps, LoginState> {
   state = {
     username: "",
     password: ""
@@ -52,9 +55,6 @@ class Login extends Component<{}, LoginState> {
       <Mutation
         mutation={SIGNIN_MUTATION}
         variables={this.state}
-        refetchQueries={[
-          { query: CURRENT_USER_QUERY, variables: { token: localStorage.getItem('JWT')} }
-        ]}
       >
         {(tokenAuth, { loading, error }) => {
           return (
@@ -67,6 +67,7 @@ class Login extends Component<{}, LoginState> {
                   const res = await tokenAuth()
                   if (res) {
                     localStorage.setItem('JWT', res.data.tokenAuth.token)
+                    this.props.history.push('/')
                   }
                 }}
               >
@@ -110,4 +111,4 @@ class Login extends Component<{}, LoginState> {
   }
 }
 
-export default Login;
+export default compose(withRouter)(Login);

@@ -1,0 +1,16 @@
+.logout-button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color .3s;
+  height: 100%;
+}
+
+.logout-button:hover {
+  background-color: rgba(0,0,0,.1);
+}
+
+.logout-button:focus {
+  background-color: transparent
+}

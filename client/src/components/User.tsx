@@ -4,8 +4,8 @@ import gql from 'graphql-tag';
 
 
 const CURRENT_USER_QUERY = gql`
-  query {
-    me {
+  query CURRENT_USER_QUERY($token: String!) {
+    me(token: $token) {
       id
       username
       firstName
@@ -16,7 +16,7 @@ const CURRENT_USER_QUERY = gql`
 
 const User = props => {
   return (
-    <Query {...props} query={CURRENT_USER_QUERY}>
+    <Query {...props} query={CURRENT_USER_QUERY} variables={{ token: localStorage.getItem('JWT') || ''}}>
       {payload => props.children(payload)}
     </Query>
   )

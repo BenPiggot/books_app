@@ -1,18 +1,19 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import Logout from './Logout';
 import User from './User';
 
 const Header = () => (
   <User>
-    {({ data: { me } }) => (
+    {({ data }) => (
       <nav >
         <div className="nav-wrapper  light-blue darken-4">
           <ul id="nav-mobile" className="right hide-on-med-and-down">
             <li><Link to="/">Home</Link></li>
             {
-              me ? (
+              data && data.me ? (
                 <>
-                  <li><Link to="/logout">Logout</Link></li>
+                  <li><Logout /></li>
                   <li><Link to="/add-book">Add New Book</Link></li>
                 </>
               ) : (
